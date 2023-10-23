@@ -1,0 +1,307 @@
+<!doctype html>
+<html>
+<head>
+<title>Yahtzee game</title>
+<!--Name:Charlie Turlis
+	Course: 235.02
+	HomeWork:#2
+
+-->
+<style type="text/css">
+<!--
+h1{text-align:center;}
+table{margin-left:auto;margin-right:auto;}
+
+td.a {text-align:rigth;}
+
+td.b {border:2px groove #a0a0a0;
+background-color: #aeaeff;
+width:3em;
+height:1.5em;}
+
+td.c{text-align:center;}
+-->
+</style>
+
+</head>
+
+<body>
+<script language="JavaScript">
+<!--
+var f = new Array();
+
+var r = new Array(0,0,0,0,0);
+
+var h = new Array(false,false,false,false,false);
+
+var E = new Array(false,false,false,false,false,false,false,false,false);
+
+var round = 13;
+
+var totalscr = 0;
+
+//stage lets you press roll 3 times before having to score 
+//3*5 5 bc its in the roll loop of 5 dice
+var stage = 15;
+
+function new_game()
+{
+	window.location.reload();
+}
+
+function pass()
+{
+	stage = 15;
+	round = round - 1
+	if(round>=0)
+	{
+	var g = document.getElementById("text");
+	g.innerHTML = round;	
+	}	
+}
+
+function roll()
+{
+	f[1]=f[2]=f[3]=f[4]=f[5]=f[6]=0;
+	for(var i=0;i<5;i++)
+	{
+		if(round > 0)
+		if(!h[i])
+		if(stage > 0)
+		{
+			{
+				var t = document.getElementById("d"+i);
+				r[i] = Math.floor(6*Math.random())+1;
+				t.src="pix/dice"+r[i]+".gif";
+				
+			}
+		stage=stage-1;
+		if(round<=0){total()}
+		}
+
+		f[r[i]]++;
+		
+	}
+
+}
+//f[x]*x
+function scr(x)
+{
+	if(f[x]>-1)
+	if(!E[x])
+	{
+	var t = document.getElementById("s"+x);
+	t.innerHTML = f[x]*x;
+	if(round>=0)
+	{
+	var g = document.getElementById("text");
+	g.innerHTML = round;	
+	}
+	}
+	
+}
+
+function threeKind(x)
+{
+	if(!E[x])
+	{
+	var t = document.getElementById("s"+x)
+	for( i=0;i<7;i++)
+	if(f[i] >= 3)
+		{
+			t.innerHTML = r[0]+r[1]+r[2]+r[3]+r[4];	
+		}
+	
+	}
+	
+}
+function fourKind(x)
+{
+	if(!E[x])
+	{
+	var t = document.getElementById("s"+x)
+	for( i=0;i<7;i++)
+	if(f[i] >= 4)
+		{
+			t.innerHTML = r[0]+r[1]+r[2]+r[3]+r[4];	
+		}
+		
+	}
+}
+function yah(x)
+{
+	if(!E[x])
+	{
+	var t = document.getElementById("s"+x)
+	for( i=0;i<7;i++)
+	if(f[i] == 5)
+		{
+			t.innerHTML = 50;	
+		}
+		
+	}
+}
+function hold(x)
+{
+
+	var t = document.getElementById("d"+x);
+	h[x]=!h[x];
+	if(h[x]){t.src ="pix/diceX" + r[x] + ".gif";}
+	else{t.src ="pix/dice" + r[x] + ".gif";}		
+
+}
+
+function lockScore(x)
+{
+
+	var t = document.getElementById("s"+x);
+	E[x]=true;
+	if(E[x]){t.style.color="red";}
+	stage = 15;
+	round=round-1;
+	totalscr = totalscr + f[x]*x;
+	f.splice(0,f.length);
+	if(round>=0)
+	{
+	var g = document.getElementById("text");
+	g.innerHTML = round;	
+	}
+		
+}
+
+function lockScoreB(x)
+{
+
+	var t = document.getElementById("s"+x);
+	E[x]=true;
+	if(E[x]){t.style.color="red";}
+	stage = 15
+	round=round-1
+	totalscr=totalscr + (r[0]+r[1]+r[2]+r[3]+r[4])
+	f.splice(0,f.length);
+		
+}
+function lockScoreC(x)
+{
+
+	var t = document.getElementById("s"+x);
+	E[x]=true;
+	if(E[x]){t.style.color="red";}
+	stage = 15
+	round=round-1
+	totalscr=totalscr + (50)
+	f.splice(0,f.length);
+		
+}
+
+function clr(x)
+{
+	if(!E[x])
+	{
+		var t =  document.getElementById("s"+x)	
+		t.innerHTML = " "
+	}
+}
+
+function total( )
+{
+	if(round<=0)	
+	var t =  document.getElementById("s"+10)	
+	t.innerHTML = totalscr;	
+}
+
+function dis( )
+{
+	if(round>=0)
+	{
+	var t = document.getElementById("text")
+	t.innerHTML = round;
+	}
+}
+
+
+//-->
+
+</script>
+
+<tbody onload="display()">
+
+<h1>Yahtzee<h1>
+<div style="text-align:center;">
+<img id="d0" onClick="hold(0)" src="pix/dice0.gif">
+<img id="d1" onClick="hold(1)" src="pix/dice0.gif">
+<img id="d2" onClick="hold(2)" src="pix/dice0.gif">
+<img id="d3" onClick="hold(3)" src="pix/dice0.gif">
+<img id="d4" onClick="hold(4)" src="pix/dice0.gif">
+</div>
+
+<table>
+<tr> <td class="a">1's</td>
+
+<td class="b" id="s1" onMouseOver="scr(1)" onMouseOut="clr(1)" 
+onCLick="lockScore(1)"> </td>
+
+
+<td rowspan="5" class="c">
+<button style="color:#f7e4e6;background-color:#5401cb"
+onClick="roll( )"
+>roll</button>
+</td> 
+
+<td><td rowspan="5" class="c">
+<button style="color:#f7e4e6;background-color:#5401cb"
+onClick="pass( )"
+>pass round</button>
+</td></tr>
+
+
+<tr> <td class="a">2's</td>
+<td class="b" id="s2" onMouseOver="scr(2)"onMouseOut="clr(2)"onCLick="lockScore(2)"> </td>
+</tr>
+
+
+<tr> <td class="a">3's</td>
+<td class="b" id="s3" onMouseOver="scr(3)"onMouseOut="clr(3)"onCLick="lockScore(3)"> </td>
+</tr>
+
+<tr> <td class="a">4's</td>
+<td class="b" id="s4" onMouseOver="scr(4)"onMouseOut="clr(4)"onCLick="lockScore(4)"> </td>
+</tr>
+
+<tr> <td class="a">5's</td>
+<td class="b" id="s5" onMouseOver="scr(5)"onMouseOut="clr(5)"onCLick="lockScore(5)"> </td>
+</tr>
+
+<tr> <td class="a">6's</td>
+<td class="b" id="s6" onMouseOver="scr(6)"onMouseOut="clr(6)"onCLick="lockScore(6)"> </td>
+<td rowspan="5" class="c"><button style="color:#0000034;background-color:#acbfc3"
+onClick="new_game()"
+>New Game
+</button>
+</td>
+</tr>
+
+<tr> <td class="a">3 of a kind</td>
+<td class="b" id="s7" onMouseOver="threeKind(7)"onMouseOut="clr(7)"onCLick="lockScoreB(7)"> </td>
+</tr>
+
+<tr> <td class="a">4 of a kind</td>
+<td class="b" id="s8" onMouseOver="fourKind(8)"onMouseOut="clr(8)"onCLick="lockScoreB(8)"> </td>
+</tr>
+
+<tr> <td class="a">Yahtzee</td>
+<td class="b" id="s9" onMouseOver="yah(9)"onMouseOut="clr(9)"onCLick="lockScoreC(9)"> </td>
+</tr>
+
+<tr> <td class="a">Total</td>
+<td class="b" id="s10" onClick="total()"> </td>
+</tr>
+
+<td>round:</td><td id="text" onMouseOver="dis()"></td><td>when round = 0 click total</td>
+
+</tbody>
+</table>
+</tbody>
+</table>
+</body>
+</html>
